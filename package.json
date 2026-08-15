@@ -3,6 +3,7 @@
   "displayName": "ReqScope",
   "description": "Requirements viewer from within your code editor.",
   "version": "0.0.1",
+  "icon": "images/logo.png",
   "engines": {
     "vscode": "^1.125.0"
   },
