@@ -1,3 +1,5 @@
+import * as vscode from 'vscode';
+
 export type RequirementStatus = {
     message: string
     color?: string
@@ -10,16 +12,23 @@ export type RequirementPriority = {
 
 export type RequirementData = {
     id: string
-    title: string
-    description: string
+    title?: string
+    description?: string
     status?: RequirementStatus
     assignee?: string
     priority?: RequirementPriority
     url?: string
 }
 
+export type Credential = {
+    name: string
+    value: string
+}
+
 export interface RequirementProvider {
     name: string; // Interface identifier
     idPattern: RegExp; // How requirements are formatted
-    fetchRequirement(id: string): Promise<RequirementData>;
+    command?: string // VS Code command name registered
+    fetchRequirement(id: string, context: vscode.ExtensionContext): Promise<RequirementData | null>;
+    setCredentials?(): Promise<Credential[]>;
 }

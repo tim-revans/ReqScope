@@ -15,7 +15,22 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": []
+    "commands": [
+      {
+        "command": "reqscope.setJamaCredentials",
+        "title": "ReqScope: Set Jama API Credentials"
+      }
+    ],
+    "configuration": {
+      "title": "ReqScope Settings",
+      "type": "object",
+      "properties": {
+        "ReqScope.jamaCompanyID": {
+          "type": "string",
+          "description": "Jama Company ID."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
