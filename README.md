@@ -8,7 +8,7 @@
 * **Direct Web Linking**: Click open direct links to the requirement.
 * **Secure Authentication**: Uses SecretStorage for secure OAuth.
 
-![ReqScope Hover Demo](images/demo-hover.png)
+![ReqScope Hover Demo](images/demo-hover.gif)
 
 ## Setup & Requirements
 
