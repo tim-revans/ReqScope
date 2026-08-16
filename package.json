@@ -24,12 +24,19 @@
       }
     ],
     "configuration": {
-      "title": "ReqScope Settings",
+      "title": "ReqScope",
       "type": "object",
       "properties": {
+        "ReqScope.provider": {
+          "type": "string",
+          "description": "Requirements provider",
+          "enum": ["Jama"],
+          "order": 0
+        },
         "ReqScope.jamaCompanyID": {
           "type": "string",
-          "description": "Jama Company ID."
+          "description": "Jama Company ID.",
+          "order": 1
         }
       }
     }

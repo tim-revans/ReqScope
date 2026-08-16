@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { RequirementProvider } from './requirement-provider';
 import { jamaProvider } from './jama-provider';
+import { getSetting } from './settings';
 
 export function activate(context: vscode.ExtensionContext) {
 	const supportedTools: RequirementProvider[] = [
@@ -21,8 +22,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const hoverProvider = vscode.languages.registerHoverProvider('*', {
 		async provideHover(document, position, token) {
-
 			for (const tool of supportedTools) {
+				if (tool.name !== getSetting('provider')) {
+					continue;
+				}
+
 				const wordRange = document.getWordRangeAtPosition(position, tool.idPattern);
 				if (wordRange === undefined) {
 					continue;
