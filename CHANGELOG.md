@@ -4,6 +4,20 @@ All notable changes to the "reqscope" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0](https://github.com/tim-revans/ReqScope/compare/v1.0.0...v1.1.0) (2026-08-16)
+
+
+### Features
+
+* add configurable caching window for requirements ([#9](https://github.com/tim-revans/ReqScope/issues/9)) ([1c1426c](https://github.com/tim-revans/ReqScope/commit/1c1426cd8e39a62ccd1ca1b495860669698d517c))
+
+
+### Bug Fixes
+
+* add demo gif ([ad4f570](https://github.com/tim-revans/ReqScope/commit/ad4f570a5e42ebf1b4f82692351f4ad84c750418))
+* trigger release bump ([e4ebb53](https://github.com/tim-revans/ReqScope/commit/e4ebb534cd34de61f42eb81a626612a3dbc64ad7))
+* versions ([0d91447](https://github.com/tim-revans/ReqScope/commit/0d914470f3355f14e4df5565834771dd8fd7f78a))
+
 ## 1.0.2 (2026-08-16)
 
 
