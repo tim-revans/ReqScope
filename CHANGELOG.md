@@ -4,6 +4,14 @@ All notable changes to the "reqscope" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## 1.0.0 (2026-08-16)
+
+
+### Bug Fixes
+
+* add demo gif ([09912df](https://github.com/tim-revans/ReqScope/commit/09912df876474b41df2d152a9beca731fae14042))
+* trigger release bump ([0459110](https://github.com/tim-revans/ReqScope/commit/0459110863f29fa20fc0a577b473c2ae447d5fda))
+
 ## [1.0.1](https://github.com/tim-revans/ReqScope/compare/v1.0.0...v1.0.1) (2026-08-16)
 
 
