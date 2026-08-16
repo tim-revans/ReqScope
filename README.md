@@ -15,6 +15,9 @@
 ### Prerequisites
 1. API credentials for your selected requirements tool.
 
+### Settings and Configuration
+1. Open Settings (`Ctrl+,` / `Cmd+,`)
+1. Apply any settings for the requirements software you want to use
 1. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
 1. Run the corresponding **ReqScope** credential setting command
 1. Enter your API credentials
