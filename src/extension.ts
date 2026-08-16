@@ -1,11 +1,9 @@
 import * as vscode from 'vscode';
 import { RequirementProvider } from './requirement-provider';
-import { mockProvider } from './mock-provider';
 import { jamaProvider } from './jama-provider';
 
 export function activate(context: vscode.ExtensionContext) {
 	const supportedTools: RequirementProvider[] = [
-		new mockProvider(),
 		new jamaProvider(),
 	];
 
