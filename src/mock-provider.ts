@@ -2,7 +2,7 @@ import { RequirementProvider, RequirementData } from "./requirement-provider";
 
 export class mockProvider implements RequirementProvider {
     name = 'Mock';
-    idPattern = /\[.*?\]/;
+    idPattern = /\[HLR-\d+\]/i;
 
     async fetchRequirement(id: string): Promise<RequirementData> {
         return {
