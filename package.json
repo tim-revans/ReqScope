@@ -4,6 +4,7 @@
   "description": "Requirements viewer from within your code editor.",
   "version": "0.0.1",
   "icon": "images/logo.png",
+  "repository": "https://github.com/tim-revans/ReqScope",
   "engines": {
     "vscode": "^1.125.0"
   },
