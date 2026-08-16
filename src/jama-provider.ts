@@ -50,6 +50,22 @@ interface JamaLink {
     type: string;
 }
 
+interface JamaPicklistOptionResponse {
+    data: {
+        id: number;
+        name: string;
+    };
+}
+
+interface JamaUserResponse {
+    data: {
+        id: number;
+        firstName?: string;
+        lastName?: string;
+        username?: string;
+    };
+}
+
 const apiSecretAuth = 'jama_api_secret';
 const apiSecretID = 'jama_api_id';
 const companyIDSettingName = `jamaCompanyID`;
@@ -129,6 +145,42 @@ export class jamaProvider implements RequirementProvider {
     idPattern = /[A-Z]+(?:-[A-Z]+)?-\d+/i;
     command = "reqscope.setJamaCredentials";
 
+    private async fetchStatusName(statusId: number, apiRoot: string, accessToken: string): Promise<string | undefined> {
+        try {
+            const url = `${apiRoot}/latest/picklistoptions/${statusId}`;
+            const res = await fetch(url, {
+                headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (!res.ok) {
+                return undefined;
+            }
+            const body = (await res.json()) as JamaPicklistOptionResponse;
+            return body.data?.name;
+        } catch {
+            return undefined;
+        }
+    }
+
+    private async fetchUserName(userId: number, apiRoot: string, accessToken: string): Promise<string | undefined> {
+        try {
+            const url = `${apiRoot}/latest/users/${userId}`;
+            const res = await fetch(url, {
+                headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${accessToken}` }
+            });
+            if (!res.ok) {
+                return undefined;
+            }
+            const body = (await res.json()) as JamaUserResponse;
+            const user = body.data;
+            if (!user) {
+                return undefined;
+            }
+            return [user.firstName, user.lastName].filter(Boolean).join(' ') || user.username;
+        } catch {
+            return undefined;
+        }
+    }
+
     async fetchRequirement(id: string, context: vscode.ExtensionContext): Promise<RequirementData | null> {
         try {
             const companyID = getSetting(companyIDSettingName);
@@ -163,10 +215,20 @@ export class jamaProvider implements RequirementProvider {
             }
             const data = item.data;
 
+            const statusId = data.fields.status as number | undefined;
+            const assigneeId = data.fields.assignedTo as number | undefined;
+
+            const [statusName, assigneeName] = await Promise.all([
+                statusId ? this.fetchStatusName(statusId, apiRoot, accessToken) : Promise.resolve(undefined),
+                assigneeId ? this.fetchUserName(assigneeId, apiRoot, accessToken) : Promise.resolve(undefined),
+            ]);
+
             return {
                 id: data.documentKey,
-                title: data.fields.name,
-                description: data.fields.description,
+                title: data.fields.name || "No Title",
+                description: data.fields.description || "No Description",
+                status: statusName ? { message: statusName } : undefined,
+                assignee: assigneeName,
                 url: `https://${companyID}.jamacloud.com/perspective.req#/items/${data.id}?projectId=${data.project}`,
             };
         } catch (error) {
