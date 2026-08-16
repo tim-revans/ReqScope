@@ -35,10 +35,16 @@
           ],
           "order": 0
         },
+        "ReqScope.cacheTimeout": {
+          "type": "number",
+          "description": "How long (in seconds) before cache entries are marked as stale.",
+          "default": 60,
+          "order": 1
+        },
         "ReqScope.jamaCompanyID": {
           "type": "string",
           "description": "Jama Company ID.",
-          "order": 1
+          "order": 10
         }
       }
     }

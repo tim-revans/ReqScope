@@ -1,12 +1,19 @@
 import * as vscode from 'vscode';
-import { RequirementProvider } from './requirement-provider';
+import { RequirementProvider, RequirementData } from './requirement-provider';
 import { jamaProvider } from './jama-provider';
 import { getSetting } from './settings';
+
+export type ReqCacheItem = {
+	lastUpdated: number
+	data: RequirementData
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	const supportedTools: RequirementProvider[] = [
 		new jamaProvider(),
 	];
+
+	const cacheName = `ReqScope_cache`;
 
 	for (const tool of supportedTools) {
 		if (tool.command && tool.setCredentials) {
@@ -29,15 +36,30 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const wordRange = document.getWordRangeAtPosition(position, tool.idPattern);
 				if (wordRange === undefined) {
-					continue;
+					break;
 				}
 				const hoveredWord = document.getText(wordRange);
+
 				if (tool.idPattern.test(hoveredWord)) {
-					const data = await tool.fetchRequirement(hoveredWord, context);
-					if (!data) {
-						continue;
+					// Check cache for requirement
+					let cache = context.globalState.get<ReqCacheItem[]>(cacheName, []);
+					cache = cache.filter((element) => (Date.now() - (element.lastUpdated ?? 0)) < (getSetting('cacheTimeout') * 1e3));
+					const found = cache.find((element) => element.data.id === hoveredWord);
+
+					// Update cache if not found
+					let data;
+					if (found && found.data.id === hoveredWord) {
+						data = found.data;
+					} else {
+						data = await tool.fetchRequirement(hoveredWord, context);
+						if (!data) {
+							break;
+						}
+						cache.push({ data: data, lastUpdated: Date.now() });
+						await context.globalState.update(cacheName, cache);
 					}
 
+					// Construct prompt
 					const markdown = new vscode.MarkdownString("", true);
 					markdown.supportHtml = true;
 
