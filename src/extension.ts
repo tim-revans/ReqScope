@@ -1,14 +1,28 @@
 import * as vscode from 'vscode';
 import { RequirementProvider } from './requirement-provider';
 import { mockProvider } from './mock-provider';
+import { jamaProvider } from './jama-provider';
 
 export function activate(context: vscode.ExtensionContext) {
+	const supportedTools: RequirementProvider[] = [
+		new mockProvider(),
+		new jamaProvider(),
+	];
+
+	for (const tool of supportedTools) {
+		if (tool.command && tool.setCredentials) {
+			const setCredentialsCmd = vscode.commands.registerCommand(tool.command, async () => {
+				const secrets = await tool.setCredentials!();
+				for (const secret of secrets) {
+					await context.secrets.store(secret.name, secret.value);
+				}
+			});
+			context.subscriptions.push(setCredentialsCmd);
+		}
+	}
 
 	const hoverProvider = vscode.languages.registerHoverProvider('*', {
 		async provideHover(document, position, token) {
-			const supportedTools: RequirementProvider[] = [
-				new mockProvider(),
-			];
 
 			for (const tool of supportedTools) {
 				const wordRange = document.getWordRangeAtPosition(position, tool.idPattern);
@@ -17,14 +31,19 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 				const hoveredWord = document.getText(wordRange);
 				if (tool.idPattern.test(hoveredWord)) {
-					const data = await tool.fetchRequirement(hoveredWord);
+					const data = await tool.fetchRequirement(hoveredWord, context);
+					if (!data) {
+						continue;
+					}
+
 					const markdown = new vscode.MarkdownString("", true);
 					markdown.supportHtml = true;
 
+					const titleText = data.title ? `${data.id}: ${data.title}` : `${data.id}`;
 					if (data.url) {
-						markdown.appendMarkdown(`### $(link-external) [${data.id}: ${data.title}](${data.url})\n\n`);
+						markdown.appendMarkdown(`### $(link-external) [${titleText}](${data.url})\n\n`);
 					} else {
-						markdown.appendMarkdown(`### ${data.id}: ${data.title}\n\n`);
+						markdown.appendMarkdown(`### ${titleText}\n\n`);
 					}
 
 					const metadata: string[] = [];
@@ -45,7 +64,9 @@ export function activate(context: vscode.ExtensionContext) {
 						markdown.appendMarkdown(`---\n\n`);
 					}
 
-					markdown.appendMarkdown(data.description);
+					if (data.description) {
+						markdown.appendMarkdown(data.description);
+					}
 
 					return new vscode.Hover(markdown);
 				}
