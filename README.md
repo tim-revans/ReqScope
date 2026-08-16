@@ -1,71 +1,38 @@
-# reqscope README
+# ReqScope
 
-This is the README for your extension "reqscope". After writing up a brief description, we recommend including the following sections.
+**ReqScope** brings your requirement specifications directly into your editor, allowing you to hover over requirements strings and view key metadata about the requirement through your providers API.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+* **On-Hover Tooltips**: Hover over any requirement key in your code to view the live requirement.
+* **Direct Web Linking**: Click open direct links to the requirement.
+* **Secure Authentication**: Uses SecretStorage for secure OAuth.
 
-For example if there is an image subfolder under your extension project workspace:
+![ReqScope Hover Demo](images/demo-hover.png)
 
-\!\[feature X\]\(images/feature-x.png\)
+## Setup & Requirements
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Prerequisites
+1. API credentials for your selected requirements tool.
 
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+1. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+1. Run the corresponding **ReqScope** credential setting command
+1. Enter your API credentials
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+This extension contributes the following workspace settings:
 
-For example:
+* `reqscope.jamaCompanyID`: Your Jama Cloud company domain ID (e.g., enter `mycompany` for `mycompany.jamacloud.com`).
 
-This extension contributes the following settings:
+## Extension Commands
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `reqscope.setJamaCredentials`: Prompts for your Jama Client ID and Client Secret, saving them securely to your operating system's native keychain.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+* **Custom Fields**: If your organization uses non-standard field names for requirements, they may not appear correctly.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+See the [CHANGELOG.md](CHANGELOG.md) for full details on version updates and bug fixes.
