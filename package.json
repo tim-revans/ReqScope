@@ -1,6 +1,7 @@
 {
   "name": "reqscope",
   "displayName": "ReqScope",
+  "publisher": "ReqScope",
   "description": "Requirements viewer from within your code editor.",
   "version": "0.0.1",
   "icon": "images/logo.png",
