@@ -36,14 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const wordRange = document.getWordRangeAtPosition(position, tool.idPattern);
 				if (wordRange === undefined) {
-					continue;
+					break;
 				}
 				const hoveredWord = document.getText(wordRange);
 
 				if (tool.idPattern.test(hoveredWord)) {
 					// Check cache for requirement
 					let cache = context.globalState.get<ReqCacheItem[]>(cacheName, []);
-					cache = cache.filter((element) => (Date.now() - (element.lastUpdated ?? 0)) < (60 * 1e3));
+					cache = cache.filter((element) => (Date.now() - (element.lastUpdated ?? 0)) < (getSetting('cacheTimeout') * 1e3));
 					const found = cache.find((element) => element.data.id === hoveredWord);
 
 					// Update cache if not found
