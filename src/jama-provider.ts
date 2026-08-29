@@ -142,7 +142,7 @@ async function getItem(itemID: number, apiRoot: string, accessToken: string): Pr
 
 export class jamaProvider implements RequirementProvider {
     name = 'Jama';
-    idPattern = /[A-Z]+(?:-[A-Z]+)?-\d+/i;
+    idPattern = /[A-Z]+(?:-[A-Z]+)?-\d+/g;
     command = "reqscope.setJamaCredentials";
 
     private async fetchStatusName(statusId: number, apiRoot: string, accessToken: string): Promise<string | undefined> {

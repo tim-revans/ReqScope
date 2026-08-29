@@ -23,6 +23,24 @@
         "title": "ReqScope: Set Jama API Credentials"
       }
     ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "ReqScope",
+          "title": "ReqScope",
+          "icon": "images/logo.png"
+        }
+      ]
+    },
+    "views": {
+      "ReqScope": [
+        {
+          "id": "ReqScope",
+          "name": "ReqScope",
+          "icon": "images/logo.png"
+        }
+      ]
+    },
     "configuration": {
       "title": "ReqScope",
       "type": "object",
