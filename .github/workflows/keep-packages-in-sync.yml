@@ -1,0 +1,77 @@
+# Disclaimer: This workflow was generated using AI
+name: Keep Packages Synched
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+      - name: Verify VS Code Engine vs Types Version
+        id: check_versions
+        run: |
+          # Extract versions using node
+          ENGINE_VER=$(node -p "require('./package.json').engines.vscode.replace(/[\^~>=]/g, '')")
+          TYPES_VER=$(node -p "require('./package.json').devDependencies['@types/vscode'].replace(/[\^~>=]/g, '')")
+
+          echo "engines.vscode: $ENGINE_VER"
+          echo "@types/vscode: $TYPES_VER"
+
+          # Function to compare semver components (Major.Minor)
+          check_compatibility() {
+            node -e "
+              const semver = require('semver');
+              const engine = '$ENGINE_VER';
+              const types = '$TYPES_VER';
+              
+              // If @types/vscode minor version is higher than engines.vscode, fail
+              if (semver.major(types) > semver.major(engine) || 
+                 (semver.major(types) === semver.major(engine) && semver.minor(types) > semver.minor(engine))) {
+                process.exit(1);
+              }
+            "
+          }
+
+          if ! check_compatibility; then
+            echo "MISMATCH=true" >> $GITHUB_OUTPUT
+            echo "ENGINE_VER=$ENGINE_VER" >> $GITHUB_OUTPUT
+            echo "TYPES_VER=$TYPES_VER" >> $GITHUB_OUTPUT
+            echo "Error: @types/vscode ($TYPES_VER) cannot be higher than engines.vscode ($ENGINE_VER)."
+            exit 1
+          fi
+
+      - name: Comment on PR on Failure
+        if: failure() && steps.check_versions.outputs.MISMATCH == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const engineVer = "${{ steps.check_versions.outputs.ENGINE_VER }}";
+            const typesVer = "${{ steps.check_versions.outputs.TYPES_VER }}";
+            
+            const body = `⚠️ **VS Code Version Mismatch Detected**
+            
+            - **\`devDependencies.@types/vscode\`**: \`${typesVer}\`
+            - **\`engines.vscode\`**: \`${engineVer}\`
+            
+            **Problem:** Your TypeScript definitions (\`@types/vscode\`) are targeted for a newer version of VS Code than your minimum supported runtime engine (\`engines.vscode\`). Code compiling against these types may call APIs that don't exist for users on older VS Code releases.
+
+            **To fix this issue:**
+            1. Increase \`engines.vscode\` in \`package.json\` to match \`^${typesVer}\`, OR
+            2. Revert \`@types/vscode\` in \`package.json\` back to \`^${engineVer}\`.`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
