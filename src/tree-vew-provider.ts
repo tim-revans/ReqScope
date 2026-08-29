@@ -14,7 +14,7 @@ export class MyTreeItem extends vscode.TreeItem {
   }
 }
 
-export class TwoColumnTreeProvider implements vscode.TreeDataProvider<MyTreeItem> {
+export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTreeItem> {
   private _onDidChangeTreeData: vscode.EventEmitter<MyTreeItem | undefined | void> = new vscode.EventEmitter<MyTreeItem | undefined | void>();
   readonly onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | void> = this._onDidChangeTreeData.event;
 

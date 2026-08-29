@@ -1,14 +1,14 @@
 import * as vscode from 'vscode';
 import { getHoverProvider } from './hover';
 import * as commands from './commands';
-import { TwoColumnTreeProvider } from './tree-vew-provider';
+import { RequirementTreeviewProvider } from './tree-vew-provider';
 
 export function activate(context: vscode.ExtensionContext) {
 	// Register Commands
 	commands.registerCredentialCommands(context);
 
 	// Register Treeview
-	const treeviewProvider = new TwoColumnTreeProvider(context);
+	const treeviewProvider = new RequirementTreeviewProvider(context);
 	vscode.window.registerTreeDataProvider('ReqScope', treeviewProvider);
 	vscode.window.onDidChangeActiveTextEditor(() => {
 		treeviewProvider.refresh();
