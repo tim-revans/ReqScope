@@ -5,7 +5,10 @@
   "description": "Requirements viewer from within your code editor.",
   "version": "1.2.0",
   "icon": "images/logo.png",
-  "repository": "https://github.com/tim-revans/ReqScope",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tim-revans/ReqScope.git"
+  },
   "engines": {
     "vscode": "^1.125.0"
   },
