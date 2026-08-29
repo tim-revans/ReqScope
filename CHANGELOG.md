@@ -2,15 +2,6 @@
 
 All notable changes to the "reqscope" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.2.0...v1.2.0) (2026-08-29)
-
-
-### Miscellaneous Chores
-
-* force release ([a25e3e9](https://github.com/tim-revans/ReqScope/commit/a25e3e99f7f40adca4ca99515c0c7718d8df80b6))
-
 ## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.1.0...v1.2.0) (2026-08-29)
 
 
