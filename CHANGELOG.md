@@ -4,6 +4,13 @@ All notable changes to the "reqscope" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.1.0...v1.2.0) (2026-08-29)
+
+
+### Features
+
+* add requirements list widget ([#14](https://github.com/tim-revans/ReqScope/issues/14)) ([6bad6c1](https://github.com/tim-revans/ReqScope/commit/6bad6c10310cdb770804dd8f9c377ab44ae4eafe))
+
 ## [1.1.0](https://github.com/tim-revans/ReqScope/compare/v1.0.0...v1.1.0) (2026-08-16)
 
 

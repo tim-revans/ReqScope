@@ -3,7 +3,7 @@
   "displayName": "ReqScope",
   "publisher": "ReqScope",
   "description": "Requirements viewer from within your code editor.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "icon": "images/logo.png",
   "repository": "https://github.com/tim-revans/ReqScope",
   "engines": {
