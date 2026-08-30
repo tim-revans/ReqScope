@@ -2,6 +2,18 @@
 
 All notable changes to the "reqscope" extension will be documented in this file.
 
+## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.2.0...v1.2.0) (2026-08-30)
+
+
+### Features
+
+* add parameters to ReqScope treeview ([#26](https://github.com/tim-revans/ReqScope/issues/26)) ([346d55f](https://github.com/tim-revans/ReqScope/commit/346d55ffb54b03b61195761fdbf26c009d6aa2f3))
+
+
+### Miscellaneous Chores
+
+* force release ([a25e3e9](https://github.com/tim-revans/ReqScope/commit/a25e3e99f7f40adca4ca99515c0c7718d8df80b6))
+
 ## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.2.0...v1.2.0) (2026-08-29)
 
 
