@@ -5,9 +5,10 @@ import { getCurrentTool } from './tools';
 export class MyTreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
-    public readonly secondColumnText: string
+    public readonly secondColumnText: string,
+    private topLevel: boolean = false,
   ) {
-    super(label, vscode.TreeItemCollapsibleState.None);
+    super(label, topLevel ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
 
     this.description = secondColumnText;
     this.tooltip = `${this.label} - ${this.secondColumnText}`;
@@ -30,8 +31,23 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
   }
 
   async getChildren(element?: MyTreeItem): Promise<MyTreeItem[]> {
+    const providerTool = getCurrentTool();
+    if (!providerTool) {
+      return Promise.resolve([new MyTreeItem('No supported provider found.', '')]);
+    }
+
+    // If asking for parameters of an element
     if (element) {
-      return Promise.resolve([]);
+      const requirement = await providerTool.fetchRequirement(element.label, this.context);
+      if (!requirement) {
+        return Promise.resolve([]);
+      }
+      const items: MyTreeItem[] = [
+        new MyTreeItem("Assignee", requirement.assignee ?? "N/A"),
+        new MyTreeItem("Priority", requirement.priority?.message ?? "N/A"),
+        new MyTreeItem("Status", requirement.status?.message ?? "N/A"),
+      ];
+      return Promise.resolve(items);
     }
 
     const openFile = vscode.window.activeTextEditor?.document;
@@ -39,20 +55,18 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
       return Promise.resolve([new MyTreeItem('No file open.', '')]);
     }
 
-    const providerTool = getCurrentTool();
-
-    if (!providerTool) {
-      return Promise.resolve([new MyTreeItem('No supported provider found.', '')]);
-    }
-
     const results = openFile.getText().matchAll(providerTool.idPattern);
 
     const items: MyTreeItem[] = [];
     for (const match of results) {
       const tag = match[0];
-      const requirementDescription = (await providerTool.fetchRequirement(tag, this.context))?.description ?? "";
+      const requirement = await providerTool.fetchRequirement(tag, this.context);
+      if (!requirement) {
+        continue;
+      }
+      const requirementDescription = requirement.description ?? "";
       const strippedRequirementDescription = requirementDescription.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim();
-      items.push(new MyTreeItem(tag, strippedRequirementDescription));
+      items.push(new MyTreeItem(tag, strippedRequirementDescription, true));
     }
 
     return Promise.resolve(items);
