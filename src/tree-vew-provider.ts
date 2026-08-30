@@ -1,6 +1,6 @@
-import * as vscode from 'vscode';
-import { RequirementProvider } from './requirement-provider';
-import { getCurrentTool } from './tools';
+import * as vscode from "vscode";
+import { RequirementProvider } from "./requirement-provider";
+import { getCurrentTool } from "./tools";
 
 export class MyTreeItem extends vscode.TreeItem {
   constructor(
@@ -8,7 +8,12 @@ export class MyTreeItem extends vscode.TreeItem {
     public readonly secondColumnText: string,
     private topLevel: boolean = false,
   ) {
-    super(label, topLevel ? vscode.TreeItemCollapsibleState.Collapsed : vscode.TreeItemCollapsibleState.None);
+    super(
+      label,
+      topLevel
+        ? vscode.TreeItemCollapsibleState.Collapsed
+        : vscode.TreeItemCollapsibleState.None,
+    );
 
     this.description = secondColumnText;
     this.tooltip = `${this.label} - ${this.secondColumnText}`;
@@ -16,11 +21,13 @@ export class MyTreeItem extends vscode.TreeItem {
 }
 
 export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTreeItem> {
-  private _onDidChangeTreeData: vscode.EventEmitter<MyTreeItem | undefined | void> = new vscode.EventEmitter<MyTreeItem | undefined | void>();
-  readonly onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | void> = this._onDidChangeTreeData.event;
+  private _onDidChangeTreeData: vscode.EventEmitter<
+    MyTreeItem | undefined | void
+  > = new vscode.EventEmitter<MyTreeItem | undefined | void>();
+  readonly onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | void> =
+    this._onDidChangeTreeData.event;
 
-  constructor(private context: vscode.ExtensionContext) {
-  }
+  constructor(private context: vscode.ExtensionContext) {}
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
@@ -33,12 +40,17 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
   async getChildren(element?: MyTreeItem): Promise<MyTreeItem[]> {
     const providerTool = getCurrentTool();
     if (!providerTool) {
-      return Promise.resolve([new MyTreeItem('No supported provider found.', '')]);
+      return Promise.resolve([
+        new MyTreeItem("No supported provider found.", ""),
+      ]);
     }
 
     // If asking for parameters of an element
     if (element) {
-      const requirement = await providerTool.fetchRequirement(element.label, this.context);
+      const requirement = await providerTool.fetchRequirement(
+        element.label,
+        this.context,
+      );
       if (!requirement) {
         return Promise.resolve([]);
       }
@@ -52,7 +64,7 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
 
     const openFile = vscode.window.activeTextEditor?.document;
     if (!openFile) {
-      return Promise.resolve([new MyTreeItem('No file open.', '')]);
+      return Promise.resolve([new MyTreeItem("No file open.", "")]);
     }
 
     const results = openFile.getText().matchAll(providerTool.idPattern);
@@ -60,12 +72,19 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
     const items: MyTreeItem[] = [];
     for (const match of results) {
       const tag = match[0];
-      const requirement = await providerTool.fetchRequirement(tag, this.context);
+      const requirement = await providerTool.fetchRequirement(
+        tag,
+        this.context,
+      );
       if (!requirement) {
         continue;
       }
       const requirementDescription = requirement.description ?? "";
-      const strippedRequirementDescription = requirementDescription.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim();
+      const strippedRequirementDescription = requirementDescription
+        .replace(/<[^>]+>/g, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&")
+        .trim();
       items.push(new MyTreeItem(tag, strippedRequirementDescription, true));
     }
 
