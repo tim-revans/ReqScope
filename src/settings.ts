@@ -1,5 +1,5 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
 export function getSetting(setting: string) {
-    return vscode.workspace.getConfiguration('ReqScope')[setting];
+  return vscode.workspace.getConfiguration("ReqScope")[setting];
 }
