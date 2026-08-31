@@ -27,7 +27,7 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
   readonly onDidChangeTreeData: vscode.Event<MyTreeItem | undefined | void> =
     this._onDidChangeTreeData.event;
 
-  constructor(private context: vscode.ExtensionContext) {}
+  constructor() {}
 
   refresh(): void {
     this._onDidChangeTreeData.fire();
@@ -47,10 +47,7 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
 
     // If asking for parameters of an element
     if (element) {
-      const requirement = await providerTool.fetchRequirement(
-        element.label,
-        this.context,
-      );
+      const requirement = await providerTool.fetchRequirement(element.label);
       if (!requirement) {
         return Promise.resolve([]);
       }
@@ -69,17 +66,17 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
 
     const results = openFile.getText().matchAll(providerTool.idPattern);
 
-    cleanCache(this.context);
+    cleanCache();
     const items: MyTreeItem[] = [];
     for (const match of results) {
       const tag = match[0];
-      let requirement = queryCache(tag, this.context);
+      let requirement = queryCache(tag);
       if (!requirement) {
-        requirement = await providerTool.fetchRequirement(tag, this.context);
+        requirement = await providerTool.fetchRequirement(tag);
         if (!requirement) {
           continue;
         }
-        updateCache(requirement, this.context);
+        updateCache(requirement);
       }
       const requirementDescription = requirement.description ?? "";
       const strippedRequirementDescription = requirementDescription

@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { getCurrentTool } from "./tools";
 import { cleanCache, queryCache, updateCache } from "./cache";
 
-export function getHoverProvider(context: vscode.ExtensionContext) {
+export function getHoverProvider() {
   return async (
     document: vscode.TextDocument,
     position: vscode.Position,
@@ -21,16 +21,16 @@ export function getHoverProvider(context: vscode.ExtensionContext) {
 
     if (tool.idPattern.test(hoveredWord)) {
       // Check cache for requirement
-      cleanCache(context);
-      let data = queryCache(hoveredWord, context);
+      cleanCache();
+      let data = queryCache(hoveredWord);
 
       // Update cache if not found
       if (!data) {
-        data = await tool.fetchRequirement(hoveredWord, context);
+        data = await tool.fetchRequirement(hoveredWord);
         if (!data) {
           return undefined;
         }
-        updateCache(data, context);
+        updateCache(data);
       }
 
       // Construct prompt

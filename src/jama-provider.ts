@@ -5,6 +5,7 @@ import {
   Credential,
 } from "./requirement-provider";
 import { getSetting } from "./settings";
+import { getContext } from "./context";
 
 interface JamaAuthResponse {
   access_token: string;
@@ -220,14 +221,12 @@ export class jamaProvider implements RequirementProvider {
     }
   }
 
-  async fetchRequirement(
-    id: string,
-    context: vscode.ExtensionContext,
-  ): Promise<RequirementData | null> {
+  async fetchRequirement(id: string): Promise<RequirementData | null> {
     try {
       const companyID = getSetting(companyIDSettingName);
       const apiRoot = `https://${companyID}.jamacloud.com/rest`;
 
+      const context = getContext();
       const clientID = await context.secrets.get(apiSecretID);
       const clientAuth = await context.secrets.get(apiSecretAuth);
       if (!clientID || !clientAuth) {
