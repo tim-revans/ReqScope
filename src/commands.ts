@@ -1,7 +1,9 @@
 import * as vscode from "vscode";
 import { supportedTools } from "./tools";
+import { getContext } from "./context";
 
-export function registerCredentialCommands(context: vscode.ExtensionContext) {
+export function registerCredentialCommands() {
+  const context = getContext();
   for (const tool of supportedTools) {
     if (tool.command && tool.setCredentials) {
       const setCredentialsCmd = vscode.commands.registerCommand(

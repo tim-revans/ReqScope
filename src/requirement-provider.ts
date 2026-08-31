@@ -29,9 +29,6 @@ export interface RequirementProvider {
   name: string; // Interface identifier
   idPattern: RegExp; // How requirements are formatted
   command?: string; // VS Code command name registered
-  fetchRequirement(
-    id: string,
-    context: vscode.ExtensionContext,
-  ): Promise<RequirementData | null>;
+  fetchRequirement(id: string): Promise<RequirementData | null>;
   setCredentials?(): Promise<Credential[]>;
 }

@@ -2,13 +2,17 @@ import * as vscode from "vscode";
 import { getHoverProvider } from "./hover";
 import * as commands from "./commands";
 import { RequirementTreeviewProvider } from "./tree-vew-provider";
+import { setContext } from "./context";
 
 export function activate(context: vscode.ExtensionContext) {
+  // Set context singleton
+  setContext(context);
+
   // Register Commands
-  commands.registerCredentialCommands(context);
+  commands.registerCredentialCommands();
 
   // Register Treeview
-  const treeviewProvider = new RequirementTreeviewProvider(context);
+  const treeviewProvider = new RequirementTreeviewProvider();
   vscode.window.registerTreeDataProvider("ReqScope", treeviewProvider);
   vscode.window.onDidChangeActiveTextEditor(
     () => {
@@ -30,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Register Hover
   const hoverProvider = vscode.languages.registerHoverProvider("*", {
-    provideHover: getHoverProvider(context),
+    provideHover: getHoverProvider(),
   });
   context.subscriptions.push(hoverProvider);
 }
