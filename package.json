@@ -95,7 +95,9 @@
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
-    "test": "vscode-test",
+    "test": "vscode-test --coverage",
+    "make-badges": "istanbul-badges-readme",
+    "make-badges:ci": "istanbul-badges-readme -- --ci --exitCode=1",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -110,6 +112,7 @@
     "esbuild": "^0.28.1",
     "eslint": "^10.9.1",
     "husky": "^9.1.7",
+    "istanbul-badges-readme": "^1.9.0",
     "lint-staged": "^17.4.1",
     "npm-run-all": "^4.1.5",
     "ovsx": "^1.1.1",
