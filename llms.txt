@@ -1,0 +1,20 @@
+# Requirements Viewer for VS Code
+
+> A VS Code extension for viewing requirements inside the editor and sidebar.
+
+## Core Features
+- On-hover display of requirements data.
+- Panel for displaying requirements for the active open file.
+- Caching for fast requirement recall.
+- Secure storage of secrets.
+- Multi-provider architecture (Jama Connect supported currently).
+
+## Target Use Cases
+- Medical device, automotive, and aerospace code compliance.
+- Requirements traceability directly inside developer IDEs.
+
+## Supported Software
+- Jama Connect
+
+## Future Plans
+- Adding more providers as people ask for them.
