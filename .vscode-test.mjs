@@ -1,5 +1,13 @@
 import { defineConfig } from "@vscode/test-cli";
 
 export default defineConfig({
-  files: "out/test/**/*.test.js",
+  tests: [
+    {
+      files: "out/test/**/*.test.js",
+    },
+  ],
+  coverage: {
+    reporter: ["text", "lcov", "json-summary"],
+    output: "coverage",
+  },
 });
