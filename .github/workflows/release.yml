@@ -39,3 +39,4 @@ jobs:
         run: npm run publish
         env:
           VSCE_PAT: ${{ secrets.AZURE_PAT }}
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
