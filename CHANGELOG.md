@@ -2,6 +2,25 @@
 
 All notable changes to the "reqscope" extension will be documented in this file.
 
+## [1.3.0](https://github.com/tim-revans/ReqScope/compare/v1.2.0...v1.3.0) (2026-08-31)
+
+
+### Features
+
+* add parameters to ReqScope treeview ([#26](https://github.com/tim-revans/ReqScope/issues/26)) ([346d55f](https://github.com/tim-revans/ReqScope/commit/346d55ffb54b03b61195761fdbf26c009d6aa2f3))
+* share requirements cache between TreeView and Editor ([#30](https://github.com/tim-revans/ReqScope/issues/30)) ([47c59a8](https://github.com/tim-revans/ReqScope/commit/47c59a849405d03dcc921e0df4bc97d6bb1b7a8e))
+
+
+### Bug Fixes
+
+* missing sidebar logo when docking TreeView ([#33](https://github.com/tim-revans/ReqScope/issues/33)) ([8bfda25](https://github.com/tim-revans/ReqScope/commit/8bfda25918d0f52ccf2dac8268267ba5e71eb553))
+
+
+### Miscellaneous Chores
+
+* force release ([a25e3e9](https://github.com/tim-revans/ReqScope/commit/a25e3e99f7f40adca4ca99515c0c7718d8df80b6))
+* release 1.3.0 ([a7ee006](https://github.com/tim-revans/ReqScope/commit/a7ee0062c39e687d116d2e347d94851858d84a75))
+
 ## [1.2.0](https://github.com/tim-revans/ReqScope/compare/v1.2.0...v1.2.0) (2026-08-29)
 
 ### Miscellaneous Chores
