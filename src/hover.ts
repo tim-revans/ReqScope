@@ -1,14 +1,6 @@
 import * as vscode from "vscode";
-import { getSetting } from "./settings";
 import { getCurrentTool } from "./tools";
-import { RequirementData } from "./requirement-provider";
-
-type ReqCacheItem = {
-  lastUpdated: number;
-  data: RequirementData;
-};
-
-const cacheName = `ReqScope_cache`;
+import { cleanCache, queryCache, updateCache } from "./cache";
 
 export function getHoverProvider(context: vscode.ExtensionContext) {
   return async (
@@ -29,25 +21,16 @@ export function getHoverProvider(context: vscode.ExtensionContext) {
 
     if (tool.idPattern.test(hoveredWord)) {
       // Check cache for requirement
-      let cache = context.globalState.get<ReqCacheItem[]>(cacheName, []);
-      cache = cache.filter(
-        (element) =>
-          Date.now() - (element.lastUpdated ?? 0) <
-          getSetting("cacheTimeout") * 1e3,
-      );
-      const found = cache.find((element) => element.data.id === hoveredWord);
+      cleanCache(context);
+      let data = queryCache(hoveredWord, context);
 
       // Update cache if not found
-      let data;
-      if (found && found.data.id === hoveredWord) {
-        data = found.data;
-      } else {
+      if (!data) {
         data = await tool.fetchRequirement(hoveredWord, context);
         if (!data) {
           return undefined;
         }
-        cache.push({ data: data, lastUpdated: Date.now() });
-        await context.globalState.update(cacheName, cache);
+        updateCache(data, context);
       }
 
       // Construct prompt

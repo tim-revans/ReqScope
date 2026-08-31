@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { RequirementProvider } from "./requirement-provider";
+import { cleanCache, queryCache, updateCache } from "./cache";
 import { getCurrentTool } from "./tools";
 
 export class MyTreeItem extends vscode.TreeItem {
@@ -69,15 +69,17 @@ export class RequirementTreeviewProvider implements vscode.TreeDataProvider<MyTr
 
     const results = openFile.getText().matchAll(providerTool.idPattern);
 
+    cleanCache(this.context);
     const items: MyTreeItem[] = [];
     for (const match of results) {
       const tag = match[0];
-      const requirement = await providerTool.fetchRequirement(
-        tag,
-        this.context,
-      );
+      let requirement = queryCache(tag, this.context);
       if (!requirement) {
-        continue;
+        requirement = await providerTool.fetchRequirement(tag, this.context);
+        if (!requirement) {
+          continue;
+        }
+        updateCache(requirement, this.context);
       }
       const requirementDescription = requirement.description ?? "";
       const strippedRequirementDescription = requirementDescription
