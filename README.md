@@ -5,6 +5,7 @@
 ## Features
 
 - **On-Hover Tooltips**: Hover over any requirement key in your code to view the live requirement.
+- **Requirements Viewer**: A panel to view all requirements in the currently open file.
 - **Direct Web Linking**: Click open direct links to the requirement.
 - **Secure Authentication**: Uses SecretStorage for secure OAuth.
 
@@ -29,6 +30,8 @@
 
 This extension contributes the following workspace settings:
 
+- `reqscope.provider`: The requirements provider you want to query.
+- `reqscope.cacheTimeout`: How long to wait before re-querying a requirement.
 - `reqscope.jamaCompanyID`: Your Jama Cloud company domain ID (e.g., enter `mycompany` for `mycompany.jamacloud.com`).
 
 ## Extension Commands
