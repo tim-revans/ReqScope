@@ -13,7 +13,15 @@
     "vscode": "^1.134.0"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "jama",
+    "jama-connect",
+    "jama-software",
+    "requirements",
+    "traceability"
   ],
   "activationEvents": [
     "*"
